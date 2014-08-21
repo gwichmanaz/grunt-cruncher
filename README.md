@@ -128,6 +128,13 @@ script: function(src) {
 }
 ```
 
+#### img
+Type: `Boolean|Function`
+Default: true
+
+Similar to `script` and `link`, callback gets filename as arg and can return `true` (proceed with default encoding of the image), `false` (abort the grunt task) or String, which will be used to replace value of image's `src` attribute.
+
+
 ### Usage Example
 
 Given this directory structure:

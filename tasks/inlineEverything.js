@@ -25,7 +25,8 @@ module.exports = function(grunt) {
 
 			tags: {
 				link: true,
-				script: true
+				script: true,
+				img: true
 			}
 		});
 
@@ -193,6 +194,10 @@ module.exports = function(grunt) {
 
 		function inlineImageTags(html, partialPath) {
 
+			if (options.tags.img === false) {
+				return html;
+			}
+
 			var images = [];
 			html = html.replace(/(<img[^\>]+src\=[\"\'])(?![^\"\']*\/\/)([^\"\']+)([\"\'][^\>]*\>)/g, function(full, start, fileName, end) {
 
@@ -206,12 +211,24 @@ module.exports = function(grunt) {
 					fileName = doPartialMagicToFileName(fileName, partialPath);
 				}
 
-				var imageData = fs.readFileSync(path.join(options.relativeTo, fileName));
-				var extension = getExtension(fileName) || 'png';
-				var base64 = imageData.toString('base64');
+				// optional preEncodeCallback callback
+				var rv = (typeof options.tags.img === 'function') ? options.tags.img( path.join(options.relativeTo, fileName) ) : true;
+				if (!rv) {
+					// failure
+					grunt.fail.warn("Failed to encode image " + fileName + ": callback declined");
+				} else if (typeof rv === 'string') {
+					// replace img by callback-provided string
+					// grunt.log.writeln(("replacing " + fileName + " by callback result " + rv).red);
+					return start + rv + end;
+				} else {
+					// use default endcoding
+					var imageData = fs.readFileSync(path.join(options.relativeTo, fileName));
+					var extension = getExtension(fileName) || 'png';
+					var base64 = imageData.toString('base64');
 
-				images.push(fileName);
-				return start + 'data:image/' + (extension == 'jpg' ? 'jpeg' : extension) + ';charset=utf-8;base64,' + base64 + end;
+					images.push(fileName);
+					return start + 'data:image/' + (extension == 'jpg' ? 'jpeg' : extension) + ';charset=utf-8;base64,' + base64 + end;
+				}
 			});
 
 			// inline TexturePacker spritemaps in an optimized, slimmed down format
