@@ -74,7 +74,7 @@ module.exports = function(grunt) {
 			}
 
 			// remove old file if it exists..
-			if(fs.exists(dest)) {
+			if(fs.existsSync(dest)) {
 				fs.unlinkSync(dest);
 			}
 
@@ -139,7 +139,7 @@ module.exports = function(grunt) {
 				files.push(newFileName);
 
 				// remove old file if it exists..
-				if(fs.exists(newFileName)) {
+				if(fs.existsSync(newFileName)) {
 					fs.unlinkSync(newFileName);
 				}
 
@@ -264,7 +264,7 @@ module.exports = function(grunt) {
 			// get the contents of the source template(s)
 			var contents = file.src.filter(function(filepath) {
 					// Remove nonexistent files (it's up to you to filter or warn here).
-					if (!grunt.file.exists(filepath)) {
+					if (!grunt.file.existsSync(filepath)) {
 						grunt.log.warn('\tSource file "' + filepath + '" not found.');
 						return false;
 					} else {
