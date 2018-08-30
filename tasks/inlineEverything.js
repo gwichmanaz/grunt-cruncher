@@ -264,7 +264,7 @@ module.exports = function(grunt) {
 			// get the contents of the source template(s)
 			var contents = file.src.filter(function(filepath) {
 					// Remove nonexistent files (it's up to you to filter or warn here).
-					if (!grunt.file.existsSync(filepath)) {
+					if (!grunt.file.exists(filepath)) {
 						grunt.log.warn('\tSource file "' + filepath + '" not found.');
 						return false;
 					} else {
