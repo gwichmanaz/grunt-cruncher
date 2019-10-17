@@ -134,6 +134,19 @@ Default: true
 
 Similar to `script` and `link`, callback gets filename as arg and can return `true` (proceed with default encoding of the image), `false` (abort the grunt task) or String, which will be used to replace value of image's `src` attribute.
 
+### filesIgnore
+Type: `Array of String`
+Default: []
+
+Add files that you do not want to inline (for example, if you want have 3 stylesheets in your html file but only want to inline 2 of them).
+
+Add all files here that you do not want inlined, including links, images, and scripts.
+
+##### For example:
+If you do not want to inline the file "assets/fonts.css", you would do
+
+`filesIgnore: ['assets/fonts.css']`
+
 
 ### Usage Example
 
