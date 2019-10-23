@@ -55,6 +55,11 @@ module.exports = function(grunt) {
 					fileName = doPartialMagicToFileName(fileName, partialPath);
 				}
 
+				// if we want to omit this file, we can just return the original link tag
+				if (options.filesIgnore && options.filesIgnore.includes(fileName)) {
+					return full;
+				}
+
 				sheets.push(fileName);
 
 				if(options.tags.link && typeof options.tags.link === 'function') {
@@ -170,6 +175,11 @@ module.exports = function(grunt) {
 					fileName = doPartialMagicToFileName(fileName, partialPath);
 				}
 
+				// if we want to omit this file, we can just return the original script tag
+				if (options.filesIgnore && options.filesIgnore.includes(fileName)) {
+					return full;
+				}
+
 				fileName = path.join(options.relativeTo, fileName);
 				if(typeof options.tags.script === 'function') {
 					fileName = options.tags.script(fileName);
@@ -209,6 +219,11 @@ module.exports = function(grunt) {
 				// magic replacements for partials
 				if(partialPath) {
 					fileName = doPartialMagicToFileName(fileName, partialPath);
+				}
+
+				// if we want to omit this file, we can just return the original image tag
+				if (options.filesIgnore && options.filesIgnore.includes(fileName)) {
+					return full;
 				}
 
 				// optional preEncodeCallback callback
